@@ -13,9 +13,14 @@ var username string = ""
 var password string = ""
 var cst string = ""
 var xst string = ""
+var base_url string = ""
 var api_key string = "859611b2fc1eaee629198189391ced734af866a9"
 
 func init() {
+	setConfig()
+}
+
+func setConfig() {
 	data, err := ioutil.ReadFile("./config.yml")
 	if err != nil {
 		panic(err)
@@ -32,7 +37,7 @@ func init() {
 	password = c["password"].(string)
 }
 
-func main() {
+func refreshTokens() {
 	client := http.Client{}
 
 	bodyString := map[string]string{"identifier": username, "password": password}
@@ -52,6 +57,32 @@ func main() {
 
 	res, err := client.Do(req)
 
+	if err != nil {
+		panic(err)
+	}
+
+	cst = res.Header.Get("CST")
+	xst = res.Header.Get("X-SECURITY-TOKEN")
+}
+
+func main() {
+	refreshTokens()
+
+	client := http.Client{}
+
+	req, err := http.NewRequest("GET", "https://api.ig.com/gateway/deal/watchlists", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	req.Header.Set("X-SECURITY-TOKEN", xst)
+	req.Header.Set("CST", cst)
+	req.Header.Set("X-IG-API-KEY", api_key)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json; charset=UTF-8")
+
+	res, err := client.Do(req)
+
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
@@ -59,9 +90,5 @@ func main() {
 		panic(err)
 	}
 
-	cst = res.Header.Get("CST")
-	xst = res.Header.Get("X-SECURITY-TOKEN")
-	// fmt.Println(cst)
-	// fmt.Println(xst)
 	fmt.Println(string(body))
 }
