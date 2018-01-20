@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"net/http"
 )
@@ -11,6 +12,23 @@ import (
 var username string = ""
 var password string = ""
 var api_key string = "859611b2fc1eaee629198189391ced734af866a9"
+
+func init() {
+	data, err := ioutil.ReadFile("./config.yml")
+	if err != nil {
+		panic(err)
+	}
+
+	c := make(map[string]interface{})
+
+	err = yaml.Unmarshal([]byte(data), &c)
+	if err != nil {
+		panic(err)
+	}
+
+	username = c["identifier"].(string)
+	password = c["password"].(string)
+}
 
 func main() {
 	client := http.Client{}
