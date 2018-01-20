@@ -11,6 +11,8 @@ import (
 
 var username string = ""
 var password string = ""
+var cst string = ""
+var xst string = ""
 var api_key string = "859611b2fc1eaee629198189391ced734af866a9"
 
 func init() {
@@ -57,5 +59,9 @@ func main() {
 		panic(err)
 	}
 
+	cst = res.Header.Get("CST")
+	xst = res.Header.Get("X-SECURITY-TOKEN")
+	// fmt.Println(cst)
+	// fmt.Println(xst)
 	fmt.Println(string(body))
 }
