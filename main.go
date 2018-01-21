@@ -70,7 +70,57 @@ func main() {
 
 	client := http.Client{}
 
-	req, err := http.NewRequest("GET", "https://api.ig.com/gateway/deal/watchlists", nil)
+	// req, err := http.NewRequest("GET", "https://api.ig.com/gateway/deal/watchlists", nil)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	//
+	// req.Header.Set("X-SECURITY-TOKEN", xst)
+	// req.Header.Set("CST", cst)
+	// req.Header.Set("X-IG-API-KEY", api_key)
+	// req.Header.Set("Content-Type", "application/json")
+	// req.Header.Set("Accept", "application/json; charset=UTF-8")
+	//
+	// res, err := client.Do(req)
+	//
+	// defer res.Body.Close()
+	//
+	// body, err := ioutil.ReadAll(res.Body)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// fmt.Println(string(body))
+
+	// req, err := http.NewRequest("GET", "https://api.ig.com/gateway/deal/watchlists/5893436", nil) // My Watchlist
+	// if err != nil {
+	// 	panic(err)
+	// }
+	//
+	// req.Header.Set("X-SECURITY-TOKEN", xst)
+	// req.Header.Set("CST", cst)
+	// req.Header.Set("X-IG-API-KEY", api_key)
+	// req.Header.Set("Content-Type", "application/json")
+	// req.Header.Set("Accept", "application/json; charset=UTF-8")
+	//
+	// res, err := client.Do(req)
+	//
+	// defer res.Body.Close()
+	//
+	// body, err := ioutil.ReadAll(res.Body)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	//
+	// fmt.Println(string(body))
+
+	epic := "CS.D.AUDUSD.CFD.IP"
+	resolution := "HOUR"
+	startdate := "2018:01:01-00:00:00"
+	enddate := "2018:01:05-00:00:00"
+	url := "https://api.ig.com/gateway/deal/prices/" + epic + "/" + resolution + "?startdate=" + startdate + "&enddate=" + enddate
+
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		panic(err)
 	}
